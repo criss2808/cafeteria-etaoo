@@ -3,7 +3,7 @@ const productos = [
     id: 1,
     nombre: "Tajadas con carne",
     descripcion: "Con repollo, chimol, salsa, queso y aderezo",
-    tamaños: [
+    tamanos: [
       { etiqueta: "Mediana", precio: 40 },
       { etiqueta: "Grande", precio: 70 },
     ],
@@ -15,7 +15,7 @@ const productos = [
     id: 2,
     nombre: "Papas fritas",
     descripcion: "Con queso y aderezo/ketchup",
-    tamaños: [
+    tamanos: [
       { etiqueta: "Mediana", precio: 40 },
       { etiqueta: "Grande", precio: 70 },
     ],
@@ -27,7 +27,7 @@ const productos = [
     id: 3,
     nombre: "Baleada",
     descripcion: "Frijoles, mantequilla y queso",
-    tamaños: [
+    tamanos: [
       { etiqueta: "Sencilla", precio: 20 },
       { etiqueta: "Con huevo", precio: 25 },
     ],
@@ -73,7 +73,7 @@ const productos = [
   },
   {
     id: 8,
-    nombre: "Sopa de baso",
+    nombre: "Sopa de vaso",
     descripcion: "Con margarina, queso y mantequilla",
     precio: 35,
     categoria: "snacks",

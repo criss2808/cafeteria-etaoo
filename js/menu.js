@@ -1,92 +1,8 @@
-const productos = [
-  {
-    id: 1,
-    nombre: "Tajadas con carne",
-    descripcion: "Con repollo, chimol, salsa, queso y aderezo",
-    tamaños: [
-      { etiqueta: "Mediana", precio: 40 },
-      { etiqueta: "Grande", precio: 70 },
-    ],
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#E1F5EE",
-  },
-  {
-    id: 2,
-    nombre: "Papas fritas",
-    descripcion: "Con queso y aderezo/ketchup",
-    tamaños: [
-      { etiqueta: "Mediana", precio: 40 },
-      { etiqueta: "Grande", precio: 70 },
-    ],
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#E1F5EE",
-  },
-  {
-    id: 3,
-    nombre: "Baleada",
-    descripcion: "Frijoles, mantequilla y queso",
-    tamaños: [
-      { etiqueta: "Sencilla", precio: 20 },
-      { etiqueta: "Con huevo", precio: 25 },
-    ],
-    categoria: "snacks",
-    icono: "🫓",
-    fondo: "#FAEEDA",
-  },
-  {
-    id: 4,
-    nombre: "Tortillas con quesillo",
-    descripcion: "Con repollo, chimol, salsa y queso",
-    precio: 50,
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#FAEEDA",
-  },
-  {
-    id: 5,
-    nombre: "Refresco natural",
-    descripcion: "Jamaica, tamarindo u horchata",
-    precio: 20,
-    categoria: "bebidas",
-    icono: "🥤",
-    fondo: "#E6F1FB",
-  },
-  {
-    id: 6,
-    nombre: "Café con leche",
-    descripcion: "Café hondureño",
-    precio: 15,
-    categoria: "bebidas",
-    icono: "☕",
-    fondo: "#E6F1FB",
-  },
-  {
-    id: 7,
-    nombre: "Tacos flauta",
-    descripcion: "Con repollo, chimol, salsa y queso",
-    precio: 50,
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#FBEAF0",
-  },
-  {
-    id: 8,
-    nombre: "Sopa de baso",
-    descripcion: "Con margarina, queso y mantequilla",
-    precio: 35,
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#FBEAF0",
-  },
-];
-
-// El carrito guarda entradas como:
-// "3-0": 2  (producto id 3, tamaño índice 0, cantidad 2)
-// "1":   1  (producto id 1, sin tamaños, cantidad 1)
+// ── ESTADO DEL CARRITO ────────────────────────────────────────────
 const carrito = {};
+let productos = [];
 
+// ── DETECTAR EL AULA DESDE LA URL ────────────────────────────────
 function detectarAula() {
   const params = new URLSearchParams(window.location.search);
   const aula = params.get("aula");
@@ -98,6 +14,25 @@ function detectarAula() {
   }
 }
 
+// ── CARGAR PRODUCTOS DESDE SUPABASE ──────────────────────────────
+async function cargarProductos() {
+  const { data, error } = await db
+    .from("productos")
+    .select("*")
+    .eq("activo", true)
+    .order("orden");
+
+  if (error) {
+    console.error("Error cargando productos:", error);
+    return;
+  }
+
+  productos = data;
+  renderizar();
+  actualizarTotales();
+}
+
+// ── RENDERIZAR PRODUCTOS ──────────────────────────────────────────
 function renderizar(categoriaFiltro = "todos") {
   const contenedor = document.getElementById("lista-productos");
   contenedor.innerHTML = "";
@@ -109,35 +44,37 @@ function renderizar(categoriaFiltro = "todos") {
     postres: "Postres",
   };
 
-  ["comidas", "snacks", "bebidas", "postres"].forEach((cat) => {
+  const categorias = ["comidas", "snacks", "bebidas", "postres"];
+
+  categorias.forEach((cat) => {
     if (categoriaFiltro !== "todos" && categoriaFiltro !== cat) return;
 
     const lista = productos.filter((p) => p.categoria === cat);
+    if (lista.length === 0) return;
 
     const titulo = document.createElement("p");
     titulo.className = "seccion-titulo";
-    titulo.textContent = nombres[cat];
+    titulo.textContent = nombres[cat] || cat;
     contenedor.appendChild(titulo);
 
     lista.forEach((p) => {
       const card = document.createElement("div");
       card.className = "producto-card";
 
-      // Si tiene tamaños, muestra los precios de cada uno
-      const preciosHTML = p.tamaños
-        ? p.tamaños
+      const preciosHTML = p.tamanos
+        ? p.tamanos
             .map(
               (t) =>
                 `<span class="precio-tag">${t.etiqueta} L ${t.precio.toFixed(2)}</span>`,
             )
             .join("")
-        : `<span class="producto-precio">L ${p.precio.toFixed(2)}</span>`;
+        : `<span class="producto-precio">L ${parseFloat(p.precio).toFixed(2)}</span>`;
 
       card.innerHTML = `
         <div class="producto-icono" style="background:${p.fondo}">${p.icono}</div>
         <div class="producto-info">
           <p class="producto-nombre">${p.nombre}</p>
-          <p class="producto-descripcion">${p.descripcion}</p>
+          <p class="producto-descripcion">${p.descripcion || ""}</p>
           <div class="precios-wrap">${preciosHTML}</div>
         </div>
         <div id="ctrl-${p.id}"></div>
@@ -149,13 +86,13 @@ function renderizar(categoriaFiltro = "todos") {
   });
 }
 
+// ── CONTROL DE CANTIDAD ───────────────────────────────────────────
 function renderizarControl(producto) {
   const el = document.getElementById("ctrl-" + producto.id);
   if (!el) return;
 
-  // Producto con tamaños: muestra un botón + por cada tamaño
-  if (producto.tamaños) {
-    const botonesHTML = producto.tamaños
+  if (producto.tamanos) {
+    const botonesHTML = producto.tamanos
       .map((t, i) => {
         const key = producto.id + "-" + i;
         const qty = carrito[key] || 0;
@@ -178,10 +115,8 @@ function renderizarControl(producto) {
         }
       })
       .join("");
-
     el.innerHTML = `<div class="tamanos-ctrl">${botonesHTML}</div>`;
   } else {
-    // Producto sin tamaños: comportamiento normal
     const qty = carrito[producto.id] || 0;
     if (qty === 0) {
       el.innerHTML = `<button class="btn-agregar" onclick="agregar(${producto.id})">+</button>`;
@@ -196,6 +131,7 @@ function renderizarControl(producto) {
   }
 }
 
+// ── AGREGAR AL CARRITO ────────────────────────────────────────────
 function agregar(id, tamanoIdx) {
   const key = tamanoIdx !== undefined ? id + "-" + tamanoIdx : id;
   carrito[key] = (carrito[key] || 0) + 1;
@@ -203,6 +139,7 @@ function agregar(id, tamanoIdx) {
   actualizarTotales();
 }
 
+// ── QUITAR DEL CARRITO ────────────────────────────────────────────
 function quitar(id, tamanoIdx) {
   const key = tamanoIdx !== undefined ? id + "-" + tamanoIdx : id;
   if (carrito[key] > 0) carrito[key]--;
@@ -210,26 +147,22 @@ function quitar(id, tamanoIdx) {
   actualizarTotales();
 }
 
+// ── ACTUALIZAR TOTALES ────────────────────────────────────────────
 function actualizarTotales() {
   let total = 0;
   let cantidad = 0;
 
   Object.keys(carrito).forEach((key) => {
     const qty = carrito[key];
-    if (qty === 0) return;
-
-    // key puede ser "3-0" (con tamaño) o "1" (sin tamaño)
+    if (!qty) return;
     const partes = key.toString().split("-");
     const id = parseInt(partes[0]);
     const producto = productos.find((p) => p.id === id);
-
-    let precio;
-    if (partes.length === 2) {
-      precio = producto.tamaños[parseInt(partes[1])].precio;
-    } else {
-      precio = producto.precio;
-    }
-
+    if (!producto) return;
+    const precio =
+      partes.length === 2 && producto.tamanos
+        ? producto.tamanos[parseInt(partes[1])].precio
+        : parseFloat(producto.precio);
     total += precio * qty;
     cantidad += qty;
   });
@@ -241,6 +174,7 @@ function actualizarTotales() {
   document.getElementById("btn-pedir").disabled = cantidad === 0;
 }
 
+// ── FILTRAR POR CATEGORÍA ─────────────────────────────────────────
 function filtrar(categoria, boton) {
   document
     .querySelectorAll(".cat-btn")
@@ -249,6 +183,7 @@ function filtrar(categoria, boton) {
   renderizar(categoria);
 }
 
+// ── IR A CONFIRMAR ────────────────────────────────────────────────
 function irAConfirmar() {
   const params = new URLSearchParams(window.location.search);
   const aula = params.get("aula") || "";
@@ -256,6 +191,7 @@ function irAConfirmar() {
   window.location.href = `confirmar.html?aula=${aula}&carrito=${carritoStr}`;
 }
 
+// ── INICIO ────────────────────────────────────────────────────────
 detectarAula();
-renderizar();
+cargarProductos();
 actualizarTotales();

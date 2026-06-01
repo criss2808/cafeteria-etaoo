@@ -1,0 +1,275 @@
+body {
+  max-width: 600px;
+}
+
+/* STATS EN HEADER */
+.header-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.stat {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 6px 12px;
+}
+
+.stat-num {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: #f0a07a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  background: white;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 62px;
+  z-index: 9;
+}
+
+.tab {
+  flex: 1;
+  padding: 13px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-family: system-ui, sans-serif;
+  color: #888;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+}
+
+.tab.activo {
+  color: #1a5c52;
+  border-bottom-color: #e8541a;
+  font-weight: 600;
+}
+
+/* TARJETA DE PEDIDO */
+.pedido-card {
+  background: white;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.pedido-card:hover {
+  background: #fafafa;
+}
+
+.pedido-numero-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: #e8f5f2;
+  color: #1a5c52;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pedido-numero-badge.listo {
+  background: #fff3ee;
+  color: #e8541a;
+}
+
+.pedido-info {
+  flex: 1;
+}
+
+.pedido-nombre {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.pedido-aula {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.pedido-items-preview {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+
+.pedido-derecha {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.pedido-total {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a5c52;
+}
+
+.pedido-hora {
+  font-size: 11px;
+  color: #bbb;
+  margin-top: 3px;
+}
+
+.pedido-estado-listo {
+  font-size: 11px;
+  color: #e8541a;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+/* VACÍO */
+.estado-vacio {
+  text-align: center;
+  padding: 60px 20px;
+  color: #bbb;
+}
+
+.estado-vacio-icono {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.estado-vacio-texto {
+  font-size: 14px;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+  min-height: 500px;
+}
+
+.modal-overlay.oculto {
+  display: none;
+}
+
+.modal {
+  background: white;
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.modal-numero {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a5c52;
+}
+
+.modal-meta {
+  font-size: 13px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.modal-cerrar {
+  background: #f0f0f0;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+}
+
+.modal-item-fila {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-top: 1px solid #f0f0f0;
+  font-size: 14px;
+}
+
+.modal-item-nombre {
+  color: #1a1a1a;
+}
+.modal-item-qty {
+  color: #999;
+  font-size: 12px;
+  margin-left: 4px;
+}
+.modal-item-precio {
+  color: #888;
+}
+
+.modal-total-fila {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid #ddd;
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+}
+
+.modal-total {
+  color: #1a5c52;
+  font-size: 17px;
+}
+
+.btn-listo {
+  width: 100%;
+  background: #e8541a;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  transition: background 0.15s;
+}
+
+.btn-listo:hover {
+  background: #c94410;
+}
+
+.btn-listo.ya-listo {
+  background: #aaa;
+  cursor: not-allowed;
+}

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmar pedido</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+    <link rel="stylesheet" href="css/confirmar.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button class="btn-back" onclick="history.back()">&#8592;</button>
+        <div>
+          <h1 class="header-titulo" id="header-titulo">Confirmar pedido</h1>
+          <p class="header-aula" id="header-aula"></p>
+        </div>
+      </div>
+    </header>
+
+    <!-- PASO 1: nombre + resumen -->
+    <div class="paso" id="paso1">
+      <div class="seccion-card">
+        <p class="campo-label">¿Cómo te llamas?</p>
+        <input
+          class="campo-input"
+          id="input-nombre"
+          type="text"
+          placeholder="Escribe tu nombre"
+          maxlength="30"
+          oninput="verificarNombre()"
+        />
+      </div>
+
+      <div class="seccion-card">
+        <p class="resumen-titulo">Tu pedido</p>
+        <div id="resumen-items"></div>
+        <div class="total-fila">
+          <span class="total-label">Total</span>
+          <span class="total-precio" id="resumen-total">L 0.00</span>
+        </div>
+      </div>
+
+      <div class="footer-fijo">
+        <button
+          class="btn-pedir"
+          id="btn-enviar"
+          disabled
+          onclick="enviarPedido()"
+        >
+          <span>Enviar pedido</span>
+          <span id="footer-total">L 0.00</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- PASO 2: número asignado -->
+    <div class="paso oculto" id="paso2">
+      <div class="numero-wrap">
+        <p class="numero-eyebrow">Tu número de pedido</p>
+        <div class="numero-grande" id="numero-pedido">—</div>
+        <div class="estado-pill" id="estado-pill">
+          <span class="pulso"></span>
+          <span id="estado-texto">En preparación</span>
+        </div>
+      </div>
+
+      <div class="seccion-card">
+        <div class="dato-fila">
+          <span class="dato-label">Nombre</span>
+          <span class="dato-valor" id="conf-nombre">—</span>
+        </div>
+        <div class="dato-fila">
+          <span class="dato-label">Aula</span>
+          <span class="dato-valor" id="conf-aula">—</span>
+        </div>
+        <div class="dato-fila">
+          <span class="dato-label">Total</span>
+          <span class="dato-valor" id="conf-total">—</span>
+        </div>
+      </div>
+
+      <p class="aviso-texto">Escucha cuando llamen tu número en la cafetería</p>
+    </div>
+
+    <!-- PASO 3: listo para recoger -->
+    <div class="paso oculto" id="paso3">
+      <div class="listo-wrap">
+        <div class="check-circulo">✓</div>
+        <h2 class="listo-titulo">¡Tu pedido está listo!</h2>
+        <p class="listo-sub">
+          Pasa a recoger el <strong id="numero-listo">—</strong>
+        </p>
+      </div>
+
+      <div class="seccion-card">
+        <div class="dato-fila">
+          <span class="dato-label">Nombre</span>
+          <span class="dato-valor" id="listo-nombre">—</span>
+        </div>
+        <div class="dato-fila">
+          <span class="dato-label">Aula</span>
+          <span class="dato-valor" id="listo-aula">—</span>
+        </div>
+        <div class="dato-fila">
+          <span class="dato-label">Total</span>
+          <span class="dato-valor" id="listo-total">—</span>
+        </div>
+      </div>
+
+      <div class="footer-fijo">
+        <button class="btn-pedir" onclick="window.location.href = 'index.html'">
+          <span>Hacer otro pedido</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+
+    <script src="js/confirmar.js"></script>
+  </body>
+</html>

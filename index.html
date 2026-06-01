@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cafetería Escolar</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+  </head>
+  <body>
+    <!-- ENCABEZADO -->
+    <header class="header">
+      <div>
+        <h1 class="header-titulo">Cafetería Escolar</h1>
+        <p class="header-aula" id="nombre-aula">Cargando aula...</p>
+      </div>
+      <button class="btn-carrito" onclick="verCarrito()">
+        🛒 <span id="total-header">L 0.00</span>
+        <span class="carrito-badge" id="cantidad-carrito">0</span>
+      </button>
+    </header>
+
+    <!-- FILTROS DE CATEGORÍA -->
+    <div class="categorias">
+      <button class="cat-btn activo" onclick="filtrar('todos', this)">
+        Todo
+      </button>
+      <button class="cat-btn" onclick="filtrar('comidas', this)">
+        Comidas
+      </button>
+      <button class="cat-btn" onclick="filtrar('snacks', this)">Snacks</button>
+      <button class="cat-btn" onclick="filtrar('bebidas', this)">
+        Bebidas
+      </button>
+      <button class="cat-btn" onclick="filtrar('postres', this)">
+        Postres
+      </button>
+    </div>
+
+    <!-- LISTA DE PRODUCTOS -->
+    <main id="lista-productos">
+      <!-- Los productos se generan con JavaScript -->
+    </main>
+
+    <!-- BOTÓN FLOTANTE DE PEDIDO -->
+    <div class="footer-fijo">
+      <button class="btn-pedir" id="btn-pedir" onclick="irAConfirmar()">
+        <span>Ver mi pedido</span>
+        <span id="total-footer">L 0.00</span>
+      </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+
+    <script src="js/menu.js"></script>
+  </body>
+</html>

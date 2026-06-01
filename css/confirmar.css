@@ -1,0 +1,219 @@
+.btn-back {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  color: white;
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paso {
+  padding: 16px;
+}
+.oculto {
+  display: none;
+}
+
+/* SECCIÓN CARD */
+.seccion-card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.campo-label {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.campo-input {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 15px;
+  font-family: system-ui, sans-serif;
+  outline: none;
+  transition: border-color 0.15s;
+  color: #1a1a1a;
+}
+
+.campo-input:focus {
+  border-color: #1a5c52;
+  box-shadow: 0 0 0 3px rgba(26, 92, 82, 0.1);
+}
+
+/* RESUMEN */
+.resumen-titulo {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1a5c52;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+  border-left: 3px solid #e8541a;
+  padding-left: 8px;
+}
+
+.resumen-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid #f0f0f0;
+  font-size: 14px;
+}
+
+.resumen-item-nombre {
+  color: #1a1a1a;
+}
+.resumen-item-qty {
+  font-size: 12px;
+  color: #999;
+  margin-left: 4px;
+}
+.resumen-item-precio {
+  color: #888;
+  font-size: 13px;
+}
+
+.total-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid #ddd;
+  margin-top: 4px;
+}
+
+.total-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.total-precio {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a5c52;
+}
+
+/* NÚMERO DE PEDIDO */
+.numero-wrap {
+  text-align: center;
+  padding: 32px 16px 20px;
+}
+
+.numero-eyebrow {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.numero-grande {
+  font-size: 80px;
+  font-weight: 700;
+  color: #1a5c52;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.estado-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #fff3ee;
+  color: #c44a16;
+  border-radius: 20px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.estado-pill.listo {
+  background: #e8f5f2;
+  color: #1a5c52;
+}
+
+.pulso {
+  width: 8px;
+  height: 8px;
+  background: #e8541a;
+  border-radius: 50%;
+  animation: pulso 1.2s ease-in-out infinite;
+}
+
+@keyframes pulso {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.7);
+  }
+}
+
+/* DATOS DE CONFIRMACIÓN */
+.dato-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-top: 1px solid #f0f0f0;
+  font-size: 14px;
+}
+
+.dato-label {
+  color: #888;
+}
+.dato-valor {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.aviso-texto {
+  text-align: center;
+  font-size: 13px;
+  color: #aaa;
+  padding: 8px 16px;
+}
+
+/* LISTO */
+.listo-wrap {
+  text-align: center;
+  padding: 32px 16px 20px;
+}
+
+.check-circulo {
+  width: 80px;
+  height: 80px;
+  background: #e8f5f2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: #1a5c52;
+  margin: 0 auto 16px;
+}
+
+.listo-titulo {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+}
+
+.listo-sub {
+  font-size: 14px;
+  color: #666;
+}

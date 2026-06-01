@@ -110,8 +110,8 @@ function construirResumen() {
     if (!producto) return;
     let nombre, precio;
 
-    if (partes.length === 2 && producto.tamaños) {
-      const tam = producto.tamaños[parseInt(partes[1])];
+    if (partes.length === 2 && producto.tamanos) {
+      const tam = producto.tamanos[parseInt(partes[1])];
       nombre = producto.nombre + " (" + tam.etiqueta + ")";
       precio = tam.precio;
     } else {

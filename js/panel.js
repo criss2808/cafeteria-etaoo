@@ -147,7 +147,7 @@ function calcularTotal(carrito) {
     if (!producto) return;
     const precio =
       partes.length === 2 && producto.tamaños
-        ? producto.tamaños[parseInt(partes[1])].precio
+        ? producto.tamanos[parseInt(partes[1])].precio
         : producto.precio;
     total += precio * qty;
   });
@@ -266,15 +266,15 @@ function abrirModal(id) {
     const producto = productos.find((p) => p.id === prodId);
     if (!producto) return;
     const nombre =
-      partes.length === 2 && producto.tamaños
+      partes.length === 2 && producto.tamanos
         ? producto.nombre +
           " (" +
-          producto.tamaños[parseInt(partes[1])].etiqueta +
+          producto.tamanos[parseInt(partes[1])].etiqueta +
           ")"
         : producto.nombre;
     const precio =
-      partes.length === 2 && producto.tamaños
-        ? producto.tamaños[parseInt(partes[1])].precio
+      partes.length === 2 && producto.tamanos
+        ? producto.tamanos[parseInt(partes[1])].precio
         : producto.precio;
 
     const fila = document.createElement("div");

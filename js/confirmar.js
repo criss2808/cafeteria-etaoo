@@ -7,6 +7,10 @@ const carrito = carritoRaw ? JSON.parse(decodeURIComponent(carritoRaw)) : {};
 let productos = [];
 let total = 0;
 
+// ── MOSTRAR EL AULA ────────────────────────────────────────────────
+document.getElementById("header-aula").textContent =
+  "📍 Aula: " + aula.charAt(0).toUpperCase() + aula.slice(1);
+
 // ── CARGAR PRODUCTOS DESDE SUPABASE ──────────────────────────────
 async function cargarProductos() {
   const { data, error } = await db
@@ -60,15 +64,15 @@ function construirResumen() {
     const id = parseInt(partes[0]);
     const producto = productos.find((p) => p.id === id);
     if (!producto) return;
-    let nombre, precio;
 
+    let nombre, precio;
     if (partes.length === 2 && producto.tamanos) {
       const tam = producto.tamanos[parseInt(partes[1])];
       nombre = producto.nombre + " (" + tam.etiqueta + ")";
       precio = tam.precio;
     } else {
       nombre = producto.nombre;
-      precio = producto.precio;
+      precio = parseFloat(producto.precio);
     }
 
     const subtotal = precio * qty;
@@ -121,7 +125,7 @@ function escucharPedido(numero) {
 // ── LLENAR DATOS DE CONFIRMACIÓN ──────────────────────────────────
 function llenarDatos(numero, nombre, totalAmt) {
   const aulaFmt = aula.charAt(0).toUpperCase() + aula.slice(1);
-  const totalFmt = "L " + totalAmt.toFixed(2);
+  const totalFmt = "L " + parseFloat(totalAmt).toFixed(2);
 
   document.getElementById("numero-pedido").textContent = numero;
   document.getElementById("conf-nombre").textContent = nombre;
@@ -142,7 +146,7 @@ async function enviarPedido() {
   btn.disabled = true;
   btn.textContent = "Enviando...";
 
-  // Calcular total
+  // Calcular total — usando tamanos SIN tilde
   let totalEnvio = 0;
   Object.keys(carrito).forEach((key) => {
     const qty = carrito[key];
@@ -152,9 +156,9 @@ async function enviarPedido() {
     const producto = productos.find((p) => p.id === id);
     if (!producto) return;
     const precio =
-      partes.length === 2 && producto.tamaños
-        ? producto.tamaños[parseInt(partes[1])].precio
-        : producto.precio;
+      partes.length === 2 && producto.tamanos
+        ? producto.tamanos[parseInt(partes[1])].precio
+        : parseFloat(producto.precio);
     totalEnvio += precio * qty;
   });
 
@@ -205,10 +209,6 @@ function mostrarPaso(id) {
   document.querySelectorAll(".paso").forEach((p) => p.classList.add("oculto"));
   document.getElementById(id).classList.remove("oculto");
 }
-
-// ── MOSTRAR EL AULA ────────────────────────────────────────────────
-document.getElementById("header-aula").textContent =
-  "📍 Aula: " + aula.charAt(0).toUpperCase() + aula.slice(1);
 
 // ── INICIO ─────────────────────────────────────────────────────────
 cargarProductos();

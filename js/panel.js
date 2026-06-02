@@ -1,10 +1,4 @@
 let productos = [];
-
-async function cargarProductosPanel() {
-  const { data } = await db.from("productos").select("*");
-  if (data) productos = data;
-}
-
 let pedidos = [];
 let tabActual = "pendientes";
 let pedidoSeleccionado = null;
@@ -21,16 +15,16 @@ function mostrarFecha() {
     texto.charAt(0).toUpperCase() + texto.slice(1);
 }
 
+// ── CARGAR PRODUCTOS ──────────────────────────────────────────────
+async function cargarProductosPanel() {
+  const { data } = await db.from("productos").select("*");
+  if (data) productos = data;
+}
+
 // ── CARGAR PEDIDOS DESDE SUPABASE ─────────────────────────────────
 async function cargarPedidos() {
   await cargarProductosPanel();
 
-  const hoy = new Date();
-  hoy.setHours(0, 0, 0, 0);
-  // ... resto del código igual
-}
-
-async function cargarPedidos() {
   const hoy = new Date();
   hoy.setHours(0, 0, 0, 0);
 
@@ -49,16 +43,12 @@ async function cargarPedidos() {
   renderizar();
 }
 
-// ── ESCUCHAR PEDIDOS NUEVOS EN TIEMPO REAL ────────────────────────
+// ── ESCUCHAR CAMBIOS EN TIEMPO REAL ───────────────────────────────
 function escucharCambios() {
   db.channel("panel-pedidos")
     .on(
       "postgres_changes",
-      {
-        event: "*",
-        schema: "public",
-        table: "pedidos",
-      },
+      { event: "*", schema: "public", table: "pedidos" },
       () => {
         cargarPedidos();
       },
@@ -77,9 +67,9 @@ function calcularTotal(carrito) {
     const producto = productos.find((p) => p.id === id);
     if (!producto) return;
     const precio =
-      partes.length === 2 && producto.tamaños
+      partes.length === 2 && producto.tamanos
         ? producto.tamanos[parseInt(partes[1])].precio
-        : producto.precio;
+        : parseFloat(producto.precio);
     total += precio * qty;
   });
   return total;
@@ -96,10 +86,10 @@ function previewItems(carrito) {
     const producto = productos.find((p) => p.id === id);
     if (!producto) return;
     const nombre =
-      partes.length === 2 && producto.tamaños
+      partes.length === 2 && producto.tamanos
         ? producto.nombre +
           " (" +
-          producto.tamaños[parseInt(partes[1])].etiqueta +
+          producto.tamanos[parseInt(partes[1])].etiqueta +
           ")"
         : producto.nombre;
     nombres.push(nombre + " x" + qty);
@@ -206,7 +196,7 @@ function abrirModal(id) {
     const precio =
       partes.length === 2 && producto.tamanos
         ? producto.tamanos[parseInt(partes[1])].precio
-        : producto.precio;
+        : parseFloat(producto.precio);
 
     const fila = document.createElement("div");
     fila.className = "modal-item-fila";

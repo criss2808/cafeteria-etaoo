@@ -179,6 +179,15 @@ function abrirModal(id) {
   const contenedor = document.getElementById("modal-items");
   contenedor.innerHTML = "";
 
+  // Mostrar notas si existen
+  const notasEl = document.getElementById("modal-notas");
+  if (pedido.notas) {
+    notasEl.textContent = "📝 " + pedido.notas;
+    notasEl.style.display = "block";
+  } else {
+    notasEl.style.display = "none";
+  }
+
   Object.keys(pedido.carrito).forEach((key) => {
     const qty = pedido.carrito[key];
     if (!qty) return;

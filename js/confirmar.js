@@ -31,7 +31,8 @@ async function cargarProductos() {
   if (pedidoActivo) {
     const nombreGuardado = params.get("nombre") || "—";
     const totalGuardado = parseFloat(params.get("total")) || 0;
-    llenarDatos(pedidoActivo, nombreGuardado, totalGuardado);
+    const notasGuardadas = params.get("notas") || "";
+    llenarDatos(pedidoActivo, nombreGuardado, totalGuardado, notasGuardadas);
 
     db.from("pedidos")
       .select("estado")
@@ -123,7 +124,7 @@ function escucharPedido(numero) {
 }
 
 // ── LLENAR DATOS DE CONFIRMACIÓN ──────────────────────────────────
-function llenarDatos(numero, nombre, totalAmt) {
+function llenarDatos(numero, nombre, totalAmt, notas) {
   const aulaFmt = aula.charAt(0).toUpperCase() + aula.slice(1);
   const totalFmt = "L " + parseFloat(totalAmt).toFixed(2);
 
@@ -136,17 +137,24 @@ function llenarDatos(numero, nombre, totalAmt) {
   document.getElementById("listo-aula").textContent = aulaFmt;
   document.getElementById("listo-total").textContent = totalFmt;
   document.getElementById("header-titulo").textContent = "Pedido #" + numero;
+
+  // Mostrar notas si existen
+  if (notas && notas.trim()) {
+    document.getElementById("conf-notas").textContent = notas;
+    document.getElementById("fila-notas").style.display = "flex";
+  }
 }
 
 // ── ENVIAR PEDIDO ──────────────────────────────────────────────────
 async function enviarPedido() {
   const nombre = document.getElementById("input-nombre").value.trim();
+  const notas = document.getElementById("input-notas").value.trim();
 
   const btn = document.getElementById("btn-enviar");
   btn.disabled = true;
   btn.textContent = "Enviando...";
 
-  // Calcular total — usando tamanos SIN tilde
+  // Calcular total
   let totalEnvio = 0;
   Object.keys(carrito).forEach((key) => {
     const qty = carrito[key];
@@ -171,6 +179,7 @@ async function enviarPedido() {
       carrito: carrito,
       total: totalEnvio,
       estado: "pendiente",
+      notas: notas || null,
     })
     .select()
     .single();
@@ -196,10 +205,12 @@ async function enviarPedido() {
     "&nombre=" +
     encodeURIComponent(nombre) +
     "&total=" +
-    totalEnvio;
+    totalEnvio +
+    "&notas=" +
+    encodeURIComponent(notas);
   window.history.replaceState({}, "", nuevaURL);
 
-  llenarDatos(numero, nombre, totalEnvio);
+  llenarDatos(numero, nombre, totalEnvio, notas);
   mostrarPaso("paso2");
   escucharPedido(numero);
 }

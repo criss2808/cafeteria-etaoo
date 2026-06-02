@@ -273,3 +273,13 @@ body {
   background: #aaa;
   cursor: not-allowed;
 }
+
+.modal-notas {
+  background: #fff8f0;
+  border: 1px solid #fdd;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #c44a16;
+  margin-bottom: 12px;
+}

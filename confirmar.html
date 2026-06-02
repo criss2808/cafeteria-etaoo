@@ -41,6 +41,20 @@
         </div>
       </div>
 
+      <!-- CAMPO DE NOTAS -->
+      <div class="seccion-card">
+        <p class="campo-label">
+          ¿Alguna preferencia? <span class="opcional">(opcional)</span>
+        </p>
+        <textarea
+          class="campo-input campo-notas"
+          id="input-notas"
+          placeholder="Ej: sin chimol, extra queso, sin repollo..."
+          maxlength="200"
+          rows="3"
+        ></textarea>
+      </div>
+
       <div class="footer-fijo">
         <button
           class="btn-pedir"
@@ -77,6 +91,10 @@
         <div class="dato-fila">
           <span class="dato-label">Total</span>
           <span class="dato-valor" id="conf-total">—</span>
+        </div>
+        <div class="dato-fila" id="fila-notas" style="display: none">
+          <span class="dato-label">Notas</span>
+          <span class="dato-valor dato-notas" id="conf-notas">—</span>
         </div>
       </div>
 
@@ -118,7 +136,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
-
     <script src="js/confirmar.js"></script>
   </body>
 </html>

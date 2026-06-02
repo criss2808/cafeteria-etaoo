@@ -217,3 +217,21 @@
   font-size: 14px;
   color: #666;
 }
+
+.campo-notas {
+  resize: none;
+  line-height: 1.5;
+}
+
+.opcional {
+  font-weight: 400;
+  color: #bbb;
+  font-size: 11px;
+}
+
+.dato-notas {
+  font-style: italic;
+  color: #888;
+  text-align: right;
+  max-width: 60%;
+}

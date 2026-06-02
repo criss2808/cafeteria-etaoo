@@ -55,6 +55,7 @@ body {
   width: 100%;
   border: none;
   cursor: pointer;
+  display: block;
   justify-content: center;
 }
 
@@ -300,4 +301,8 @@ input:checked + .toggle-slider:before {
   border-left: 3px solid #e8541a;
   margin-left: 16px;
   padding-left: 8px;
+}
+
+.oculto {
+  display: none !important;
 }

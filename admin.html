@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — Cafetería ETAOO</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+  <body>
+    <!-- PANTALLA DE LOGIN -->
+    <div id="pantalla-login">
+      <div class="login-wrap">
+        <div class="login-icono">🔐</div>
+        <h1 class="login-titulo">Panel de administración</h1>
+        <p class="login-sub">Cafetería ETAOO</p>
+        <input
+          class="campo-input"
+          id="input-clave"
+          type="password"
+          placeholder="Contraseña"
+          onkeydown="if (event.key === 'Enter') entrar();"
+        />
+        <button class="btn-pedir" onclick="entrar()">Entrar</button>
+        <p class="login-error oculto" id="login-error">Contraseña incorrecta</p>
+      </div>
+    </div>
+
+    <!-- PANEL PRINCIPAL -->
+    <div id="pantalla-admin" class="oculto">
+      <header class="header">
+        <div>
+          <h1 class="header-titulo">Menú</h1>
+          <p class="header-aula">Administración</p>
+        </div>
+        <button class="btn-nuevo" onclick="abrirModalNuevo()">+ Nuevo</button>
+      </header>
+
+      <main id="lista-admin"></main>
+    </div>
+
+    <!-- MODAL EDITAR / CREAR -->
+    <div
+      class="modal-overlay oculto"
+      id="modal-overlay"
+      onclick="cerrarModal()"
+    >
+      <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <p class="modal-numero" id="modal-titulo">Nuevo producto</p>
+          <button class="modal-cerrar" onclick="cerrarModal()">✕</button>
+        </div>
+
+        <label class="campo-label">Nombre</label>
+        <input
+          class="campo-input"
+          id="campo-nombre"
+          type="text"
+          placeholder="Nombre del producto"
+        />
+
+        <label class="campo-label">Descripción</label>
+        <input
+          class="campo-input"
+          id="campo-descripcion"
+          type="text"
+          placeholder="Descripción corta"
+        />
+
+        <label class="campo-label">Categoría</label>
+        <select class="campo-input" id="campo-categoria">
+          <option value="snacks">Bocadillos</option>
+          <option value="bebidas">Bebidas</option>
+          <option value="comidas">Comidas del día</option>
+          <option value="postres">Postres</option>
+        </select>
+
+        <label class="campo-label">Ícono (emoji)</label>
+        <input
+          class="campo-input"
+          id="campo-icono"
+          type="text"
+          placeholder="🍽️"
+        />
+
+        <div id="seccion-precio">
+          <label class="campo-label">Precio (L)</label>
+          <input
+            class="campo-input"
+            id="campo-precio"
+            type="number"
+            placeholder="0.00"
+          />
+        </div>
+
+        <div id="seccion-tamanos">
+          <label class="campo-label">¿Tiene tamaños?</label>
+          <div class="toggle-wrap">
+            <label class="toggle">
+              <input
+                type="checkbox"
+                id="check-tamanos"
+                onchange="toggleTamanos()"
+              />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label" id="toggle-label">No</span>
+          </div>
+
+          <div id="campos-tamanos" class="oculto">
+            <div class="tamano-input-fila">
+              <input
+                class="campo-input"
+                id="tam1-nombre"
+                type="text"
+                placeholder="Nombre (ej: Sencilla)"
+              />
+              <input
+                class="campo-input"
+                id="tam1-precio"
+                type="number"
+                placeholder="Precio"
+              />
+            </div>
+            <div class="tamano-input-fila">
+              <input
+                class="campo-input"
+                id="tam2-nombre"
+                type="text"
+                placeholder="Nombre (ej: Especial)"
+              />
+              <input
+                class="campo-input"
+                id="tam2-precio"
+                type="number"
+                placeholder="Precio"
+              />
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-pedir" id="btn-guardar" onclick="guardarProducto()">
+          Guardar producto
+        </button>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>

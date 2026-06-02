@@ -5,16 +5,30 @@ const CLAVE = "Samuel_2008";
 let productos = [];
 let productoEditando = null;
 
-// ── LOGIN ─────────────────────────────────────────────────────────
-function entrar() {
+// ── LOGIN SEGURO ──────────────────────────────────────────────────
+async function entrar() {
   const clave = document.getElementById("input-clave").value.trim();
-  if (clave === CLAVE) {
-    document.getElementById("pantalla-login").classList.add("oculto");
-    document.getElementById("pantalla-admin").classList.remove("oculto");
-    cargarProductos();
-  } else {
+  if (!clave) return;
+
+  const btn = document.querySelector(".login-wrap .btn-pedir");
+  btn.textContent = "Verificando...";
+  btn.disabled = true;
+
+  const { data, error } = await db.rpc("verificar_clave_admin", {
+    clave_ingresada: clave,
+  });
+
+  btn.textContent = "Entrar";
+  btn.disabled = false;
+
+  if (error || !data) {
     document.getElementById("login-error").classList.remove("oculto");
+    return;
   }
+
+  document.getElementById("pantalla-login").classList.add("oculto");
+  document.getElementById("pantalla-admin").classList.remove("oculto");
+  cargarProductos();
 }
 
 // ── CARGAR PRODUCTOS ──────────────────────────────────────────────

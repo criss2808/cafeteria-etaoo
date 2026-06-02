@@ -1,86 +1,9 @@
-const productos = [
-  {
-    id: 1,
-    nombre: "Tajadas con carne",
-    descripcion: "Con repollo, chimol, salsa, queso y aderezo",
-    tamanos: [
-      { etiqueta: "Mediana", precio: 40 },
-      { etiqueta: "Grande", precio: 70 },
-    ],
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#E1F5EE",
-  },
-  {
-    id: 2,
-    nombre: "Papas fritas",
-    descripcion: "Con queso y aderezo/ketchup",
-    tamanos: [
-      { etiqueta: "Mediana", precio: 40 },
-      { etiqueta: "Grande", precio: 70 },
-    ],
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#E1F5EE",
-  },
-  {
-    id: 3,
-    nombre: "Baleada",
-    descripcion: "Frijoles, mantequilla y queso",
-    tamanos: [
-      { etiqueta: "Sencilla", precio: 20 },
-      { etiqueta: "Con huevo", precio: 25 },
-    ],
-    categoria: "snacks",
-    icono: "🫓",
-    fondo: "#FAEEDA",
-  },
-  {
-    id: 4,
-    nombre: "Tortillas con quesillo",
-    descripcion: "Con repollo, chimol, salsa y queso",
-    precio: 50,
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#FAEEDA",
-  },
-  {
-    id: 5,
-    nombre: "Refresco natural",
-    descripcion: "Jamaica, tamarindo u horchata",
-    precio: 20,
-    categoria: "bebidas",
-    icono: "🥤",
-    fondo: "#E6F1FB",
-  },
-  {
-    id: 6,
-    nombre: "Café con leche",
-    descripcion: "Café hondureño",
-    precio: 15,
-    categoria: "bebidas",
-    icono: "☕",
-    fondo: "#E6F1FB",
-  },
-  {
-    id: 7,
-    nombre: "Tacos flauta",
-    descripcion: "Con repollo, chimol, salsa y queso",
-    precio: 50,
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#FBEAF0",
-  },
-  {
-    id: 8,
-    nombre: "Sopa de vaso",
-    descripcion: "Con margarina, queso y mantequilla",
-    precio: 35,
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#FBEAF0",
-  },
-];
+let productos = [];
+
+async function cargarProductosPanel() {
+  const { data } = await db.from("productos").select("*");
+  if (data) productos = data;
+}
 
 let pedidos = [];
 let tabActual = "pendientes";
@@ -99,6 +22,14 @@ function mostrarFecha() {
 }
 
 // ── CARGAR PEDIDOS DESDE SUPABASE ─────────────────────────────────
+async function cargarPedidos() {
+  await cargarProductosPanel();
+
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+  // ... resto del código igual
+}
+
 async function cargarPedidos() {
   const hoy = new Date();
   hoy.setHours(0, 0, 0, 0);

@@ -4,95 +4,47 @@ const aula = params.get("aula") || "Sin aula";
 const carritoRaw = params.get("carrito");
 const carrito = carritoRaw ? JSON.parse(decodeURIComponent(carritoRaw)) : {};
 
-const productos = [
-  {
-    id: 1,
-    nombre: "Tajadas con carne",
-    descripcion: "Con repollo, chimol, salsa, queso y aderezo",
-    tamanos: [
-      { etiqueta: "Mediana", precio: 40 },
-      { etiqueta: "Grande", precio: 70 },
-    ],
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#E1F5EE",
-  },
-  {
-    id: 2,
-    nombre: "Papas fritas",
-    descripcion: "Con queso y aderezo/ketchup",
-    tamanos: [
-      { etiqueta: "Mediana", precio: 40 },
-      { etiqueta: "Grande", precio: 70 },
-    ],
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#E1F5EE",
-  },
-  {
-    id: 3,
-    nombre: "Baleada",
-    descripcion: "Frijoles, mantequilla y queso",
-    tamanos: [
-      { etiqueta: "Sencilla", precio: 20 },
-      { etiqueta: "Con huevo", precio: 25 },
-    ],
-    categoria: "snacks",
-    icono: "🫓",
-    fondo: "#FAEEDA",
-  },
-  {
-    id: 4,
-    nombre: "Tortillas con quesillo",
-    descripcion: "Con repollo, chimol, salsa y queso",
-    precio: 50,
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#FAEEDA",
-  },
-  {
-    id: 5,
-    nombre: "Refresco natural",
-    descripcion: "Jamaica, tamarindo u horchata",
-    precio: 20,
-    categoria: "bebidas",
-    icono: "🥤",
-    fondo: "#E6F1FB",
-  },
-  {
-    id: 6,
-    nombre: "Café con leche",
-    descripcion: "Café hondureño",
-    precio: 15,
-    categoria: "bebidas",
-    icono: "☕",
-    fondo: "#E6F1FB",
-  },
-  {
-    id: 7,
-    nombre: "Tacos flauta",
-    descripcion: "Con repollo, chimol, salsa y queso",
-    precio: 50,
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#FBEAF0",
-  },
-  {
-    id: 8,
-    nombre: "Sopa de vaso",
-    descripcion: "Con margarina, queso y mantequilla",
-    precio: 35,
-    categoria: "snacks",
-    icono: "🍽️",
-    fondo: "#FBEAF0",
-  },
-];
-
+let productos = [];
 let total = 0;
 
-// ── MOSTRAR EL AULA ────────────────────────────────────────────────
-document.getElementById("header-aula").textContent =
-  "📍 Aula: " + aula.charAt(0).toUpperCase() + aula.slice(1);
+// ── CARGAR PRODUCTOS DESDE SUPABASE ──────────────────────────────
+async function cargarProductos() {
+  const { data, error } = await db
+    .from("productos")
+    .select("*")
+    .eq("activo", true);
+
+  if (error) {
+    console.error("Error cargando productos:", error);
+    return;
+  }
+
+  productos = data;
+  construirResumen();
+
+  // Si hay pedido activo en la URL restaurar estado
+  const pedidoActivo = params.get("pedido");
+  if (pedidoActivo) {
+    const nombreGuardado = params.get("nombre") || "—";
+    const totalGuardado = parseFloat(params.get("total")) || 0;
+    llenarDatos(pedidoActivo, nombreGuardado, totalGuardado);
+
+    db.from("pedidos")
+      .select("estado")
+      .eq("id", pedidoActivo)
+      .single()
+      .then(({ data }) => {
+        if (data && data.estado === "listo") {
+          document.getElementById("header-titulo").textContent =
+            "¡Listo para recoger!";
+          mostrarPaso("paso3");
+        } else {
+          mostrarPaso("paso2");
+          escucharPedido(pedidoActivo);
+        }
+      });
+  }
+}
 
 // ── CONSTRUIR EL RESUMEN ───────────────────────────────────────────
 function construirResumen() {
@@ -254,31 +206,9 @@ function mostrarPaso(id) {
   document.getElementById(id).classList.remove("oculto");
 }
 
+// ── MOSTRAR EL AULA ────────────────────────────────────────────────
+document.getElementById("header-aula").textContent =
+  "📍 Aula: " + aula.charAt(0).toUpperCase() + aula.slice(1);
+
 // ── INICIO ─────────────────────────────────────────────────────────
-construirResumen();
-
-// Si hay un pedido activo en la URL (refresh), restaurar el estado
-const pedidoActivo = params.get("pedido");
-if (pedidoActivo) {
-  const nombreGuardado = params.get("nombre") || "—";
-  const totalGuardado = parseFloat(params.get("total")) || 0;
-  llenarDatos(pedidoActivo, nombreGuardado, totalGuardado);
-
-  // Verificar el estado actual en Supabase antes de mostrar el paso
-  db.from("pedidos")
-    .select("estado")
-    .eq("id", pedidoActivo)
-    .single()
-    .then(({ data }) => {
-      if (data && data.estado === "listo") {
-        // Ya estaba listo antes del refresh
-        document.getElementById("header-titulo").textContent =
-          "¡Listo para recoger!";
-        mostrarPaso("paso3");
-      } else {
-        // Sigue pendiente, escuchar cambios
-        mostrarPaso("paso2");
-        escucharPedido(pedidoActivo);
-      }
-    });
-}
+cargarProductos();

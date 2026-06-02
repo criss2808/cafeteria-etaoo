@@ -7,7 +7,7 @@ let productoEditando = null;
 
 // ── LOGIN ─────────────────────────────────────────────────────────
 function entrar() {
-  const clave = document.getElementById("input-clave").value;
+  const clave = document.getElementById("input-clave").value.trim();
   if (clave === CLAVE) {
     document.getElementById("pantalla-login").classList.add("oculto");
     document.getElementById("pantalla-admin").classList.remove("oculto");

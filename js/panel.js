@@ -62,21 +62,28 @@ function escucharCambios() {
 
 function sonarNuevoPedido() {
   const ctx = new AudioContext();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
 
-  osc.connect(gain);
-  gain.connect(ctx.destination);
+  // Suena 3 veces seguidas
+  [0, 0.6, 1.2].forEach((offset) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
 
-  osc.frequency.setValueAtTime(880, ctx.currentTime);
-  osc.frequency.setValueAtTime(660, ctx.currentTime + 0.15);
-  osc.frequency.setValueAtTime(880, ctx.currentTime + 0.3);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
 
-  gain.gain.setValueAtTime(0.4, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+    osc.frequency.setValueAtTime(880, ctx.currentTime + offset);
+    osc.frequency.setValueAtTime(660, ctx.currentTime + offset + 0.15);
+    osc.frequency.setValueAtTime(880, ctx.currentTime + offset + 0.3);
 
-  osc.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.5);
+    gain.gain.setValueAtTime(0.8, ctx.currentTime + offset);
+    gain.gain.exponentialRampToValueAtTime(
+      0.001,
+      ctx.currentTime + offset + 0.5,
+    );
+
+    osc.start(ctx.currentTime + offset);
+    osc.stop(ctx.currentTime + offset + 0.5);
+  });
 }
 
 // ── CALCULAR TOTAL ────────────────────────────────────────────────

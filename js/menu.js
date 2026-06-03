@@ -188,7 +188,7 @@ function irAConfirmar() {
   const params = new URLSearchParams(window.location.search);
   const aula = params.get("aula") || "";
   const carritoStr = encodeURIComponent(JSON.stringify(carrito));
-  window.location.href = `confirmar.html?aula=${aula}&carrito=${carritoStr}`;
+  window.location.href = `confirmar.html?aula=${encodeURIComponent(aula)}&carrito=${carritoStr}`;
 }
 
 // ── INICIO ────────────────────────────────────────────────────────

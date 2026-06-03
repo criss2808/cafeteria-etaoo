@@ -222,9 +222,13 @@ function mostrarPaso(id) {
 }
 
 function nuevoPedido() {
-  const aulaParam =
-    aula !== "Sin aula" ? "?aula=" + encodeURIComponent(aula) : "";
-  window.location.href = "index.html" + aulaParam;
+  const aulaGuardada = params.get("aula") || "";
+  if (aulaGuardada) {
+    window.location.href =
+      "index.html?aula=" + encodeURIComponent(aulaGuardada);
+  } else {
+    window.location.href = "index.html";
+  }
 }
 
 // ── INICIO ─────────────────────────────────────────────────────────

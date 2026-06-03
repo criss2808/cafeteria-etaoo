@@ -49,11 +49,34 @@ function escucharCambios() {
     .on(
       "postgres_changes",
       { event: "*", schema: "public", table: "pedidos" },
-      () => {
+      (payload) => {
+        // Solo sonar cuando llega un pedido NUEVO (INSERT)
+        if (payload.eventType === "INSERT") {
+          sonarNuevoPedido();
+        }
         cargarPedidos();
       },
     )
     .subscribe();
+}
+
+function sonarNuevoPedido() {
+  const ctx = new AudioContext();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.frequency.setValueAtTime(880, ctx.currentTime);
+  osc.frequency.setValueAtTime(660, ctx.currentTime + 0.15);
+  osc.frequency.setValueAtTime(880, ctx.currentTime + 0.3);
+
+  gain.gain.setValueAtTime(0.4, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+
+  osc.start(ctx.currentTime);
+  osc.stop(ctx.currentTime + 0.5);
 }
 
 // ── CALCULAR TOTAL ────────────────────────────────────────────────

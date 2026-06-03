@@ -221,5 +221,11 @@ function mostrarPaso(id) {
   document.getElementById(id).classList.remove("oculto");
 }
 
+function nuevoPedido() {
+  const aulaParam =
+    aula !== "Sin aula" ? "?aula=" + encodeURIComponent(aula) : "";
+  window.location.href = "index.html" + aulaParam;
+}
+
 // ── INICIO ─────────────────────────────────────────────────────────
 cargarProductos();

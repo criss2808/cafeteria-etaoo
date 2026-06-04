@@ -283,3 +283,23 @@ body {
   color: #c44a16;
   margin-bottom: 12px;
 }
+.btn-estado-caseta {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  transition: all 0.15s;
+}
+
+.btn-estado-caseta.abierta {
+  background: #e8f5f2;
+  color: #1a5c52;
+}
+
+.btn-estado-caseta.cerrada {
+  background: #fff3ee;
+  color: #e8541a;
+}

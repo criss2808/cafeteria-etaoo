@@ -1,5 +1,20 @@
 // ── ESTADO DEL CARRITO ────────────────────────────────────────────
 const carrito = {};
+
+// ── VERIFICAR SI LA CASETA ESTÁ ABIERTA ──────────────────────────
+async function verificarEstadoCaseta() {
+  const { data, error } = await db
+    .from("config")
+    .select("valor")
+    .eq("clave", "caseta_abierta")
+    .single();
+
+  if (error || !data || data.valor !== "true") {
+    document.getElementById("pantalla-cerrada").style.display = "flex";
+    document.getElementById("pantalla-cerrada").classList.remove("oculto");
+  }
+}
+
 let productos = [];
 
 // ── DETECTAR EL AULA DESDE LA URL ────────────────────────────────
@@ -193,5 +208,6 @@ function irAConfirmar() {
 
 // ── INICIO ────────────────────────────────────────────────────────
 detectarAula();
+verificarEstadoCaseta();
 cargarProductos();
 actualizarTotales();

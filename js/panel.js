@@ -302,7 +302,43 @@ function cambiarTab(tab, boton) {
   renderizar();
 }
 
+// ── ESTADO DE LA CASETA ───────────────────────────────────────────
+let casetaAbierta = true;
+
+async function cargarEstadoCaseta() {
+  const { data } = await db
+    .from("config")
+    .select("valor")
+    .eq("clave", "caseta_abierta")
+    .single();
+
+  casetaAbierta = data?.valor === "true";
+  actualizarBotonCaseta();
+}
+
+function actualizarBotonCaseta() {
+  const btn = document.getElementById("btn-caseta");
+  if (casetaAbierta) {
+    btn.textContent = "🟢 Caseta abierta";
+    btn.className = "btn-estado-caseta abierta";
+  } else {
+    btn.textContent = "🔴 Caseta cerrada";
+    btn.className = "btn-estado-caseta cerrada";
+  }
+}
+
+async function toggleCaseta() {
+  casetaAbierta = !casetaAbierta;
+  actualizarBotonCaseta();
+
+  await db
+    .from("config")
+    .update({ valor: casetaAbierta ? "true" : "false" })
+    .eq("clave", "caseta_abierta");
+}
+
 // ── INICIO ────────────────────────────────────────────────────────
 mostrarFecha();
+cargarEstadoCaseta();
 cargarPedidos();
 escucharCambios();

@@ -13,14 +13,23 @@
         <h1 class="header-titulo">Panel cafetería</h1>
         <p class="header-aula" id="fecha-hoy"></p>
       </div>
-      <div class="header-stats">
-        <div class="stat">
-          <span class="stat-num" id="stat-pendientes">0</span>
-          <span class="stat-label">pendientes</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num" id="stat-listos">0</span>
-          <span class="stat-label">listos</span>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button
+          class="btn-estado-caseta"
+          id="btn-caseta"
+          onclick="toggleCaseta()"
+        >
+          Cargando...
+        </button>
+        <div class="header-stats">
+          <div class="stat">
+            <span class="stat-num" id="stat-pendientes">0</span>
+            <span class="stat-label">pendientes</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" id="stat-listos">0</span>
+            <span class="stat-label">listos</span>
+          </div>
         </div>
       </div>
     </header>

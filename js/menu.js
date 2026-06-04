@@ -14,6 +14,28 @@ async function verificarEstadoCaseta() {
   }
 }
 
+// ── ESCUCHAR CAMBIOS EN ESTADO DE CASETA ─────────────────────────
+function escucharEstadoCaseta() {
+  db.channel("config-caseta")
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "config",
+        filter: "clave=eq.caseta_abierta",
+      },
+      (payload) => {
+        if (payload.new.valor !== "true") {
+          document.getElementById("pantalla-cerrada").style.display = "flex";
+        } else {
+          document.getElementById("pantalla-cerrada").style.display = "none";
+        }
+      },
+    )
+    .subscribe();
+}
+
 let productos = [];
 
 // ── DETECTAR EL AULA DESDE LA URL ────────────────────────────────
@@ -208,5 +230,6 @@ function irAConfirmar() {
 // ── INICIO ────────────────────────────────────────────────────────
 detectarAula();
 verificarEstadoCaseta();
+escucharEstadoCaseta();
 cargarProductos();
 actualizarTotales();

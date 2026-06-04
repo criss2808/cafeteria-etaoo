@@ -11,7 +11,6 @@ async function verificarEstadoCaseta() {
 
   if (error || !data || data.valor !== "true") {
     document.getElementById("pantalla-cerrada").style.display = "flex";
-    document.getElementById("pantalla-cerrada").classList.remove("oculto");
   }
 }
 
